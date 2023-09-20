@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
@@ -14,7 +15,62 @@ public class MeshGenerator : MonoBehaviour
     Vector3[] vertices;
     int[] triangles;
 
+    private float ballMass = 0.006f;
 
+    public GameObject ball;
+
+    private Vector2 _currentPos;
+    
+    
+    
+     private void Awake()
+        {
+             _currentPos = ball.transform.position;
+        }
+    
+        void Start()
+        {
+            mesh = new Mesh();
+            GetComponent<MeshFilter>().mesh = mesh;
+    
+            CreateShape();
+            UpdateMesh();
+        }
+
+        private void FixedUpdate()
+        {
+            _currentPos = ball.transform.position;
+        }
+
+        void CreateShape()
+        {
+            vertices = new Vector3[]
+            {
+                new Vector3(0.0f, 0.097f, 0.0f),
+                new Vector3(0.4f, 0.005f, 0.0f),
+                new Vector3(0.0f, 0.005f, 0.4f),
+                new Vector3(0.8f, 0.007f, 0.4f),
+                new Vector3(0.4f, 0.075f, 0.4f),
+                new Vector3(0.8f, 0.039f, 0.0f)
+            };
+    
+            triangles = new int[]
+            {
+                2, 1, 0,
+                2, 4, 1,
+                1, 4, 3,
+                1, 3, 5
+            };
+        }
+    
+        void UpdateMesh()
+        {
+            mesh.Clear();
+    
+            mesh.vertices = vertices;
+            mesh.triangles = triangles;
+            mesh.RecalculateNormals();
+        }
     private Vector3 BarycentricCoordinates(Vector2 point1, Vector2 point2, Vector2 point3, Vector2 point)
     {
         Vector2 p12 = point2 - point1;
@@ -78,7 +134,7 @@ public class MeshGenerator : MonoBehaviour
             Vector3 p2 = mesh.vertices[mesh.triangles[i + 2]];
 
             // Find the balls position in the xz-plane
-            Vector2 pos = new Vector2(_currentPos.x, _currentPos.z);
+            Vector2 pos = new Vector2( _currentPos.x, _currentPos.y);
 
             // Find which triangle the ball is currently on with barycentric coordinates
             Vector3 baryCoords = BarycentricCoordinates(
@@ -90,50 +146,19 @@ public class MeshGenerator : MonoBehaviour
 
             if (baryCoords is { x: >= 0.0f, y: >= 0.0f, z: >= 0.0f })
             {
-                // .......
+                //beregne normal
+                Vector3 normalVector = Vector3.Cross(p1 - p0, p2 - p0).normalized;
+
+                //bergen akselerasjonesvektor - ligning (8.12)
+                Vector3 acceleration = (1 / ballMass) * (normalVector + Physics.gravity);
+                //Oppdaterer hastigheten og posisjon
+                
+                //ligning (8.14) og (8.15)
             }
         }
     }
 
 
-
-    void Start()
-    {
-        mesh = new Mesh();
-        GetComponent<MeshFilter>().mesh = mesh;
-
-        CreateShape();
-        UpdateMesh();
-    }
-
-    void CreateShape()
-    {
-        vertices = new Vector3[]
-        {
-            new Vector3(0.0f, 0.097f, 0.0f),
-            new Vector3(0.4f, 0.005f, 0.0f),
-            new Vector3(0.0f, 0.005f, 0.4f),
-            new Vector3(0.8f, 0.007f, 0.4f),
-            new Vector3(0.4f, 0.075f, 0.4f),
-            new Vector3(0.8f, 0.039f, 0.0f)
-        };
-
-        triangles = new int[]
-        {
-            2, 1, 0,
-            2, 4, 1,
-            1, 4, 3,
-            1, 3, 5
-        };
-    }
-
-    void UpdateMesh()
-    {
-        mesh.Clear();
-
-        mesh.vertices = vertices;
-        mesh.triangles = triangles;
-        mesh.RecalculateNormals();
-    }
+   
 }
 
