@@ -12,14 +12,14 @@ public class MeshGenerator : MonoBehaviour
     Mesh mesh;
 
     Vector3[] vertices;
-    int[]triangles;
-   
+    int[] triangles;
 
-   private Vector3 BarycentricCoordinates(Vector2 point1,Vector2 point2,Vector2 point3, Vector2 point)
+
+    private Vector3 BarycentricCoordinates(Vector2 point1, Vector2 point2, Vector2 point3, Vector2 point)
     {
         Vector2 p12 = point2 - point1;
         Vector2 p13 = point3 - point1;
-        Vector3 n = (Vector3.Cross(new Vector3(p12.x,0.0f ,p12.y) ,new Vector3(p13.x,0.0f ,p13.y)));
+        Vector3 n = (Vector3.Cross(new Vector3(p12.x, 0.0f, p12.y), new Vector3(p13.x, 0.0f, p13.y)));
         float areal_123 = n.magnitude;
         Vector3 baryc;
         //u
@@ -39,54 +39,38 @@ public class MeshGenerator : MonoBehaviour
         baryc.z = n.z / areal_123;
         return baryc;
     }
-float Triangulation::GetSurfaceHeight(glm::vec3 p)
-{
-    // Loop through each triangle in the mesh.
-    for (int i = 0; i < (numTriangles); i++)
+
+    private float GetSurfaceHeight(Vector2 p)
     {
-        // Get the vertices of the triangle.
-        unsigned int v0 = getIndex(i, 0);
-        unsigned int v1 = getIndex(i, 1);
-        unsigned int v2 = getIndex(i, 2);
-        glm::vec3 p0 = getVertex(v0);
-        glm::vec3 p1 = getVertex(v1);
-        glm::vec3 p2 = getVertex(v2);
-
-        glm::vec3 baryCoords = barycentricCoordinates(p0, p1, p2, p);
-
-        // Check if the player's position is inside the triangle.
-        if (baryCoords.x >= 0.0f && baryCoords.y >= 0.0f && baryCoords.z >= 0.0f)
+        for (int i = 0; i < triangles.Length; i += 3)
         {
-            // The player's position is inside the triangle.
-            // Calculate the height of the surface at the player's position.
-            float height = baryCoords.x * p0.z + baryCoords.y * p1.z + baryCoords.z * p2.z;
+            var v0 = vertices[triangles[i]];
+            var v1 = vertices[triangles[i + 1]];
+            var v2 = vertices[triangles[i + 2]];
 
-            // Return the height as the height of the surface at the player's position.
-            return height;
+            Vector3 barcoords = BarycentricCoordinates(
+                new Vector2(v0.x, v0.z),
+                new Vector2(v1.x, v1.z),
+                new Vector2(v2.x, v2.z),
+                p);
+
+            if (barcoords.x >= 0.0f && barcoords.y >= 0.0f && barcoords.z >= 0.0f)
+            {
+                float height = barcoords.x * v0.y + barcoords.y * v1.y + barcoords.z * v2.y;
+
+                return height;
+            }
         }
+
+        return 0.0f;
     }
 
-    return 0.0f;
-}
-   Vector3 GetSurfaceHeight()
-   {
-       
-       
-       return Height;
-   }
-   private Vector3 GetCollision( Vector3 barycentric)
-   {
-
-       Vector3 S = (barycentric.x* vertices)
-       
-       
-       return ;
-   }
+   
 
     void Move()
     {
         // Iterate through each triangle 
-        for (int i = 0; i <mesh.triangles.Length; i += 3)
+        for (int i = 0; i < mesh.triangles.Length; i += 3)
         {
             // Find the vertices of the triangle
             Vector3 p0 = mesh.vertices[mesh.triangles[i]];
@@ -106,7 +90,7 @@ float Triangulation::GetSurfaceHeight(glm::vec3 p)
 
             if (baryCoords is { x: >= 0.0f, y: >= 0.0f, z: >= 0.0f })
             {
-               // .......
+                // .......
             }
         }
     }
