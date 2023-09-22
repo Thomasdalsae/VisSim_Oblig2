@@ -11,7 +11,6 @@ public class Ball_physics : MonoBehaviour
 
    public MeshGenerator mesh;
 
-    private Vector2 _currentPos;
     private float _radius = 0.020f;
     [SerializeField] private Vector3 _currentfPosition;
     [SerializeField] private Vector3 _previousPosition;
@@ -27,7 +26,7 @@ public class Ball_physics : MonoBehaviour
     
     //Start locations
     
-    [SerializeField] private Vector2 _startLocation = new Vector2(0.00f,0.00f);
+    [SerializeField] public Vector2 _startLocation = new Vector2(0.05f,0.05f);
     private float _startHeight;
 
     private void Start()
@@ -58,14 +57,13 @@ public class Ball_physics : MonoBehaviour
         for (int i = 0; i < mesh.triangles.Length; i += 3)
         {
 
-            _currentIndex = i / 3;
             // Find the vertices of the triangle
             Vector3 p0 = mesh.vertices[mesh.triangles[i]];
             Vector3 p1 = mesh.vertices[mesh.triangles[i + 1]];
             Vector3 p2 = mesh.vertices[mesh.triangles[i + 2]];
 
             // Find the balls position in the xz-plane
-            Vector2 pos = new Vector2(_currentPos.x, _currentPos.y);
+            Vector2 pos = new Vector2(_currentfPosition.x, _currentfPosition.z);
 
             // Find which triangle the ball is currently on with barycentric coordinates
             Vector3 baryCoords = mesh.BarycentricCoordinates(
@@ -78,6 +76,7 @@ public class Ball_physics : MonoBehaviour
             if (baryCoords is { x: >= 0.0f, y: >= 0.0f, z: >= 0.0f })
             {
                 //beregne normal
+                _currentIndex = i / 3;
                 _currentNormal = Vector3.Cross(p1 - p0, p2 - p0).normalized;
                 
                 //bergen akselerasjonesvektor - ligning (8.12)
@@ -96,10 +95,12 @@ public class Ball_physics : MonoBehaviour
                 _previousPosition = _currentfPosition;
                 transform.position = _currentfPosition;
                 
+                Debug.Log("hmm" + _currentIndex);
+                Debug.Log("hmm" + _previousIndex);
                 
-
                 if (_currentIndex != _previousIndex)
                 {
+                    Debug.Log("triange" + i/3);
                     //ballen har Rullet over til en ny trekant
                     //beregn normaler  til kollisjonsplanet
                     // se ligningen(8.17)
