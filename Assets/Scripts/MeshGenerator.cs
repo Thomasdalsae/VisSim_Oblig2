@@ -10,7 +10,7 @@ using Vector3 = UnityEngine.Vector3;
 
 public class MeshGenerator : MonoBehaviour
 {
-    Mesh mesh;
+    private Mesh _mesh;
 
     Vector3[] vertices;
     int[] triangles;
@@ -20,28 +20,27 @@ public class MeshGenerator : MonoBehaviour
     public GameObject ball;
 
     private Vector2 _currentPos;
-    
-    
-    
+
      private void Awake()
-        {
-             _currentPos = ball.transform.position;
-        }
+     {
+         _mesh = new Mesh();
+         GetComponent<MeshFilter>().mesh = _mesh;
+         
+         CreateShape();
+         UpdateMesh();
+         
+     }
     
         void Start()
         {
-            mesh = new Mesh();
-            GetComponent<MeshFilter>().mesh = mesh;
+            _mesh = new Mesh();
+            GetComponent<MeshFilter>().mesh = _mesh;
     
             CreateShape();
             UpdateMesh();
         }
 
-        private void FixedUpdate()
-        {
-            _currentPos = ball.transform.position;
-        }
-
+     
         void CreateShape()
         {
             vertices = new Vector3[]
@@ -65,11 +64,11 @@ public class MeshGenerator : MonoBehaviour
     
         void UpdateMesh()
         {
-            mesh.Clear();
+            _mesh.Clear();
     
-            mesh.vertices = vertices;
-            mesh.triangles = triangles;
-            mesh.RecalculateNormals();
+            _mesh.vertices = vertices;
+            _mesh.triangles = triangles;
+            _mesh.RecalculateNormals();
         }
     private Vector3 BarycentricCoordinates(Vector2 point1, Vector2 point2, Vector2 point3, Vector2 point)
     {
@@ -121,44 +120,6 @@ public class MeshGenerator : MonoBehaviour
         return 0.0f;
     }
 
-   
 
-    void Move()
-    {
-        // Iterate through each triangle 
-        for (int i = 0; i < mesh.triangles.Length; i += 3)
-        {
-            // Find the vertices of the triangle
-            Vector3 p0 = mesh.vertices[mesh.triangles[i]];
-            Vector3 p1 = mesh.vertices[mesh.triangles[i + 1]];
-            Vector3 p2 = mesh.vertices[mesh.triangles[i + 2]];
-
-            // Find the balls position in the xz-plane
-            Vector2 pos = new Vector2( _currentPos.x, _currentPos.y);
-
-            // Find which triangle the ball is currently on with barycentric coordinates
-            Vector3 baryCoords = BarycentricCoordinates(
-                new Vector2(p0.x, p0.z),
-                new Vector2(p1.x, p1.z),
-                new Vector2(p2.x, p2.z),
-                pos
-            );
-
-            if (baryCoords is { x: >= 0.0f, y: >= 0.0f, z: >= 0.0f })
-            {
-                //beregne normal
-                Vector3 normalVector = Vector3.Cross(p1 - p0, p2 - p0).normalized;
-
-                //bergen akselerasjonesvektor - ligning (8.12)
-                Vector3 acceleration = (1 / ballMass) * (normalVector + Physics.gravity);
-                //Oppdaterer hastigheten og posisjon
-                
-                //ligning (8.14) og (8.15)
-            }
-        }
-    }
-
-
-   
 }
 
