@@ -15,7 +15,6 @@ public class MeshGenerator : MonoBehaviour
     public Vector3[] vertices;
     public int[] triangles;
 
-    private float ballMass = 0.006f;
 
     public GameObject ball;
 
@@ -81,17 +80,17 @@ public class MeshGenerator : MonoBehaviour
         Vector2 p = point2 - point;
         Vector2 q = point3 - point;
         n = Vector3.Cross(new Vector3(p.x, 0.0f, p.y), new Vector3(q.x, 0.0f, q.y));
-        baryc.x = n.z / areal_123;
+        baryc.x = n.y / areal_123;
         //v
         p = point3 - point;
         q = point1 - point;
         n = Vector3.Cross(new Vector3(p.x, 0.0f, p.y), new Vector3(q.x, 0.0f, q.y));
-        baryc.y = n.z / areal_123;
+        baryc.y = n.y / areal_123;
         //w
         p = point1 - point;
         q = point2 - point;
         n = Vector3.Cross(new Vector3(p.x, 0.0f, p.y), new Vector3(q.x, 0.0f, q.y));
-        baryc.z = n.z / areal_123;
+        baryc.z = n.y / areal_123;
         return baryc;
     }
 
@@ -99,6 +98,7 @@ public class MeshGenerator : MonoBehaviour
     {
         for (int i = 0; i < triangles.Length; i += 3)
         {
+            Debug.Log("first for loop");
             var v0 = vertices[triangles[i]];
             var v1 = vertices[triangles[i + 1]];
             var v2 = vertices[triangles[i + 2]];
@@ -111,8 +111,18 @@ public class MeshGenerator : MonoBehaviour
 
             if (barcoords.x >= 0.0f && barcoords.y >= 0.0f && barcoords.z >= 0.0f)
             {
+                
+            
                 float height = barcoords.x * v0.y + barcoords.y * v1.y + barcoords.z * v2.y;
-
+                /*
+                Debug.Log("first for if statement" + barcoords.x);
+                Debug.Log("first for if statement" + barcoords.y);
+                Debug.Log("first for if statement" + barcoords.z);
+                Debug.Log("first for if statement" + v0.x);
+                Debug.Log("first for if statement" + v0.y);
+                Debug.Log("first for if statement" + v0.z);
+                Debug.Log("first for if statement" + height);
+                */
                 return height;
             }
         }
