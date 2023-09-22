@@ -155,6 +155,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e63fd80dce7aa904cb76b7dd771f20da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  meshGenerator: {fileID: 224917069}
+  currentPosition: {x: 0, y: 0, z: 0}
+  previousPosition: {x: 0, y: 0, z: 0}
+  currentVelocity: {x: 0, y: 0, z: 0}
+  previousVelocity: {x: 0, y: 0, z: 0}
 --- !u!135 &205750579
 SphereCollider:
   m_ObjectHideFlags: 0

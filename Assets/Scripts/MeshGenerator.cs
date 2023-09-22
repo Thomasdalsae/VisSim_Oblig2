@@ -12,8 +12,8 @@ public class MeshGenerator : MonoBehaviour
 {
     private Mesh _mesh;
 
-    Vector3[] vertices;
-    int[] triangles;
+    public Vector3[] vertices;
+    public int[] triangles;
 
     private float ballMass = 0.006f;
 
@@ -70,7 +70,7 @@ public class MeshGenerator : MonoBehaviour
             _mesh.triangles = triangles;
             _mesh.RecalculateNormals();
         }
-    private Vector3 BarycentricCoordinates(Vector2 point1, Vector2 point2, Vector2 point3, Vector2 point)
+    public Vector3 BarycentricCoordinates(Vector2 point1, Vector2 point2, Vector2 point3, Vector2 point)
     {
         Vector2 p12 = point2 - point1;
         Vector2 p13 = point3 - point1;
@@ -95,7 +95,7 @@ public class MeshGenerator : MonoBehaviour
         return baryc;
     }
 
-    private float GetSurfaceHeight(Vector2 p)
+    public float GetSurfaceHeight(Vector2 p)
     {
         for (int i = 0; i < triangles.Length; i += 3)
         {
