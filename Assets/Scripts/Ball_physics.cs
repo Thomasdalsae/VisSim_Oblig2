@@ -12,6 +12,9 @@ public class Ball_physics : MonoBehaviour
    public MeshGenerator mesh;
 
     private float _radius = 0.020f;
+
+    [SerializeField] private Vector3 hitLocation;
+    //
     [SerializeField] private Vector3 _currentfPosition;
     [SerializeField] private Vector3 _previousPosition;
     [SerializeField] private Vector3 _currentVelocity;
@@ -43,6 +46,7 @@ public class Ball_physics : MonoBehaviour
     {
         if (mesh)
         {
+            Correction();
             Move();
         } 
     }
@@ -51,6 +55,26 @@ public class Ball_physics : MonoBehaviour
     {
     }
 
+    void Correction()
+    {
+        
+                  // Find the point on the ground directly under the center of the ball
+                        Vector3 p = new Vector3(_currentfPosition.x, 
+                            mesh.GetSurfaceHeight(new Vector2(_currentfPosition.x, _currentfPosition.z)), 
+                            _currentfPosition.z);
+                        
+                        // Distance vector from center to p
+                        Vector3 dist = _currentfPosition - p;
+                        
+                        // Distance vector projected onto normal
+                        Vector3 b = Vector3.Dot(dist, _currentNormal) * _currentNormal;
+                
+                       if (b.magnitude <= _radius)
+                        {
+                            _currentfPosition = p + _radius * _currentNormal;
+                            transform.position = _currentfPosition;
+                        }
+    }
     void Move()
     {
         // Iterate through each triangle 
@@ -73,8 +97,11 @@ public class Ball_physics : MonoBehaviour
                 pos
             );
 
+            
             if (baryCoords is { x: >= 0.0f, y: >= 0.0f, z: >= 0.0f })
             {
+                
+                hitLocation = baryCoords;
                 //beregne normal
                 _currentIndex = i / 3;
                 _currentNormal = Vector3.Cross(p1 - p0, p2 - p0).normalized;
@@ -95,8 +122,8 @@ public class Ball_physics : MonoBehaviour
                 _previousPosition = _currentfPosition;
                 transform.position = _currentfPosition;
                 
-                Debug.Log("hmm" + _currentIndex);
-                Debug.Log("hmm" + _previousIndex);
+                //Debug.Log("hmm" + _currentIndex);
+                //Debug.Log("hmm" + _previousIndex);
                 
                 if (_currentIndex != _previousIndex)
                 {
@@ -110,15 +137,19 @@ public class Ball_physics : MonoBehaviour
 
                     //Korrigere posisjon oppover i normalens retning
                     //oppdater hastighetsverkoren (8.16)
-                    var afterCollisionVelocity =  _currentVelocity - 2 * Vector3.Dot(_currentVelocity , n) * n;
+                    var afterCollisionVelocity =  _currentVelocity - 2f * Vector3.Dot(_currentVelocity , n) * n;
                     //oppdater posisjon i retning den nye hastighestvektoren
                     _currentVelocity = afterCollisionVelocity + Acceleration * Time.fixedDeltaTime;
                     _previousVelocity = _currentVelocity;
-                
+                    
                     _currentfPosition = _previousPosition + _previousVelocity * Time.fixedDeltaTime;
                     _previousPosition = _currentfPosition;
                     transform.position = _currentfPosition;
                 
+
+                  
+                    
+                    
                 }
                 //Oppdater gammel  normal og indeks
                 _previousNormal = _currentNormal;
