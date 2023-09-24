@@ -335,6 +335,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   vertices: []
   triangles: 
+  txtFileVertices: {fileID: 4900000, guid: 41df470f8c566f4499f004efa4764480, type: 3}
+  txtFileTriangle: {fileID: 4900000, guid: 71db483a85778a54eb4ec246ed78d71d, type: 3}
   ball: {fileID: 205750577}
 --- !u!4 &224917073
 Transform:
