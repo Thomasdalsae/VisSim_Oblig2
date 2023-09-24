@@ -33,11 +33,12 @@ public class MeshGenerator : MonoBehaviour
          GetComponent<MeshFilter>().mesh = _mesh;
          
          txtHandlingVertices();
+         /*
          for (int i = 0; i < vertices.Length; i++)
          {
              Debug.Log("vertices" + vertices[0]);
          }
-         
+         */
          textHandlingTriangles();
          //CreateShape();
          UpdateMesh();
@@ -94,11 +95,10 @@ public class MeshGenerator : MonoBehaviour
             
             CultureInfo cultureInfo = new CultureInfo("en-US");
             string[] textInfo = txtFileVertices.text.Split('\n'); //this is the content as string
-            
-            foreach (var line in textInfo)
+
+            for (int i = 1; i < textInfo.Length; i++)
             {
-                Debug.Log("line" + line);
-                var data = line.Split(' ');
+                var data = textInfo[i].Split(' ');
                 if (data.Length == 3)
                 {
                     float x = float.Parse(data[0],cultureInfo);
@@ -112,13 +112,13 @@ public class MeshGenerator : MonoBehaviour
                     temp.Add(new Vector3(x,y,z));
                 }
 
-                
+               /* 
                 foreach (var VARIABLE in temp)
                 {
                     Debug.Log("ssssssssssssssssssssssssssssssssss" + VARIABLE.ToString("F4")  );
                     
                 }
-                
+                */
                     vertices = temp.ToArray();
             }
             
@@ -135,27 +135,27 @@ public class MeshGenerator : MonoBehaviour
                    
                    CultureInfo cultureInfo = new CultureInfo("en-US");
                    string[] textInfo = txtFileTriangle.text.Split('\n'); //this is the content as string
-                   
-                   foreach (var line in textInfo)
+                   Debug.Log("text lengt " + textInfo.Length);
+                   for (int k = 1; k < textInfo.Length;k++)
                    {
-                       Debug.Log("line" + line);
-                       var data = line.Split(' ');
+                       var data = textInfo[k].Split(' ');
                        if (data.Length == 6)
                        {
+                           
+                           Debug.Log("pain" + data[0] + data[1]+data[2]);
                            temp.Add(int.Parse(data[0],cultureInfo));
                            temp.Add(int.Parse(data[1],cultureInfo));
                            temp.Add(int.Parse(data[2],cultureInfo));
-                           
-                           
                        }
-       
-                       foreach (var VARIABLE in temp)
-                       {
-                           Debug.Log("Triangle Temp check" + VARIABLE.ToString()  );
-                       }
-                       triangles = temp.ToArray();
+
+                       /*
+                      foreach (var VARIABLE in temp
+                      {
+                          Debug.Log("Triangle Temp check" + VARIABLE.ToString()  );
+                      }
+                      */
                    }
-                   
+                       triangles = temp.ToArray();
                } 
               // Debug.Log("TextFile has not been found");
     } 
