@@ -35,7 +35,7 @@ public class Ball_physics : MonoBehaviour
     private void Start()
     {
         var _startHeight = mesh.GetSurfaceHeight(new Vector2(_startLocation.x,_startLocation.y));
-        Debug.Log("herro" + _startHeight);
+        //Debug.Log("herro" + _startHeight);
         _currentfPosition = new Vector3(_startLocation.x, _startHeight + _radius, _startLocation.y);
         _previousPosition = _currentfPosition;
         
@@ -127,7 +127,7 @@ public class Ball_physics : MonoBehaviour
                 
                 if (_currentIndex != _previousIndex)
                 {
-                    Debug.Log("triange" + i/3);
+                   // Debug.Log("triange" + i/3);
                     //ballen har Rullet over til en ny trekant
                     //beregn normaler  til kollisjonsplanet
                     // se ligningen(8.17)
