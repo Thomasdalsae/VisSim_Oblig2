@@ -165,7 +165,7 @@ MonoBehaviour:
   _previousIndex: 0
   _previousNormal: {x: 0, y: 0, z: 0}
   _currentNormal: {x: 0, y: 0, z: 0}
-  _startLocation: {x: 0.1, y: 0.1}
+  _startLocation: {x: 0.06, y: 0.03}
 --- !u!135 &205750579
 SphereCollider:
   m_ObjectHideFlags: 0

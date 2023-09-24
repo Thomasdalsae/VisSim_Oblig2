@@ -19,12 +19,17 @@ public class Ball_physics : MonoBehaviour
     [SerializeField] private Vector3 _previousPosition;
     [SerializeField] private Vector3 _currentVelocity;
     [SerializeField] private Vector3 _previousVelocity;
+    [SerializeField] private float timeBall;
+    [SerializeField]private List<float> timeBallArray;
+    [SerializeField] private Vector3 Acceleration;
+    
     
     //
     [SerializeField] private int _currentIndex;//(current triangle)
     [SerializeField] private int _previousIndex;//(Previous triangle)
     [SerializeField] private Vector3 _previousNormal;
     [SerializeField] private Vector3 _currentNormal;
+    
     
     
     //Start locations
@@ -49,6 +54,11 @@ public class Ball_physics : MonoBehaviour
             Correction();
             Move();
         } 
+    }
+
+    private void Update()
+    {
+        
     }
 
     private void Awake()
@@ -101,6 +111,8 @@ public class Ball_physics : MonoBehaviour
             if (baryCoords is { x: >= 0.0f, y: >= 0.0f, z: >= 0.0f })
             {
                 
+                timeBall += Time.fixedDeltaTime;
+                
                 hitLocation = baryCoords;
                 //beregne normal
                 _currentIndex = i / 3;
@@ -109,7 +121,7 @@ public class Ball_physics : MonoBehaviour
                 //bergen akselerasjonesvektor - ligning (8.12)
                 // Vector3 acceleration = (1 / ballMass) * (normalVector + Physics.gravity);
                 //Oppdaterer hastigheten og posisjon
-                var Acceleration = -Physics.gravity.y * new Vector3((_currentNormal.x * _currentNormal.y),
+                 Acceleration = -Physics.gravity.y * new Vector3((_currentNormal.x * _currentNormal.y),
                     (_currentNormal.y * _currentNormal.y - 1),
                     (_currentNormal.z * _currentNormal.y));
                 //Oppdater hastighet og posisjon
@@ -127,6 +139,7 @@ public class Ball_physics : MonoBehaviour
                 
                 if (_currentIndex != _previousIndex)
                 {
+                    timeBallArray.Add(timeBall);
                    // Debug.Log("triange" + i/3);
                     //ballen har Rullet over til en ny trekant
                     //beregn normaler  til kollisjonsplanet
@@ -158,5 +171,6 @@ public class Ball_physics : MonoBehaviour
 
             
         }
+        
     }
 }
