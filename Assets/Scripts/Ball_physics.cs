@@ -70,7 +70,7 @@ public class Ball_physics : MonoBehaviour
         // Distance vector projected onto normal
         var b = Vector3.Dot(dist, _currentNormal) * _currentNormal;
 
-        if (b.sqrMagnitude <= _radius) //Using sqrMagnitude.
+        if (b.magnitude <= _radius) 
         {
             _currentfPosition = p + _radius * _currentNormal;
             transform.position = _currentfPosition;

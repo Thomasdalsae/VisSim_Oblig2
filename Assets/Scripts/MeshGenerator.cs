@@ -33,7 +33,6 @@ public class MeshGenerator : MonoBehaviour
          GetComponent<MeshFilter>().mesh = _mesh;
          
          txtHandlingVertices();
-   
          textHandlingTriangles();
          UpdateMesh();
          
