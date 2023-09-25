@@ -33,50 +33,12 @@ public class MeshGenerator : MonoBehaviour
          GetComponent<MeshFilter>().mesh = _mesh;
          
          txtHandlingVertices();
-         /*
-         for (int i = 0; i < vertices.Length; i++)
-         {
-             Debug.Log("vertices" + vertices[0]);
-         }
-         */
+   
          textHandlingTriangles();
-         //CreateShape();
          UpdateMesh();
          
      }
-    
-       /*
-        void Start()
-        {
-            _mesh = new Mesh();
-            GetComponent<MeshFilter>().mesh = _mesh;
-    
-            CreateShape();
-            UpdateMesh();
-        }
-*/
-     
-        void CreateShape()
-        {
-            vertices = new Vector3[]
-            {
-                new Vector3(0.0f, 0.097f, 0.0f),
-                new Vector3(0.4f, 0.005f, 0.0f),
-                new Vector3(0.0f, 0.005f, 0.4f),
-                new Vector3(0.8f, 0.007f, 0.4f),
-                new Vector3(0.4f, 0.075f, 0.4f),
-                new Vector3(0.8f, 0.039f, 0.0f)
-            };
-    
-            triangles = new int[]
-            {
-                2, 1, 0,
-                2, 4, 1,
-                1, 4, 3,
-                1, 3, 5
-            };
-        }
-    
+
         void UpdateMesh()
         {
             _mesh.Clear();
@@ -104,26 +66,13 @@ public class MeshGenerator : MonoBehaviour
                     float x = float.Parse(data[0],cultureInfo);
                     float y = float.Parse(data[1],cultureInfo);
                     float z = float.Parse(data[2],cultureInfo);
-                    /*
-                    Debug.Log("X" + x);
-                    Debug.Log("Y" + y);
-                    Debug.Log("Z" + z);
-                    */
+               
                     temp.Add(new Vector3(x,y,z));
                 }
-
-               /* 
-                foreach (var VARIABLE in temp)
-                {
-                    Debug.Log("ssssssssssssssssssssssssssssssssss" + VARIABLE.ToString("F4")  );
-                    
-                }
-                */
                     vertices = temp.ToArray();
             }
             
         }
-               //Debug.Log("TextFile has not been found");
     }
 
     void textHandlingTriangles()
@@ -148,16 +97,9 @@ public class MeshGenerator : MonoBehaviour
                            temp.Add(int.Parse(data[2],cultureInfo));
                        }
 
-                       /*
-                      foreach (var VARIABLE in temp
-                      {
-                          Debug.Log("Triangle Temp check" + VARIABLE.ToString()  );
-                      }
-                      */
                    }
                        triangles = temp.ToArray();
                } 
-              // Debug.Log("TextFile has not been found");
     } 
     
       
@@ -206,15 +148,6 @@ public class MeshGenerator : MonoBehaviour
                 
             
                 float height = barcoords.x * v0.y + barcoords.y * v1.y + barcoords.z * v2.y;
-                /*
-                Debug.Log("first for if statement" + barcoords.x);
-                Debug.Log("first for if statement" + barcoords.y);
-                Debug.Log("first for if statement" + barcoords.z);
-                Debug.Log("first for if statement" + v0.x);
-                Debug.Log("first for if statement" + v0.y);
-                Debug.Log("first for if statement" + v0.z);
-                Debug.Log("first for if statement" + height);
-                */
                 return height;
             }
         }
