@@ -49,7 +49,6 @@ public class MeshGenerator : MonoBehaviour
 
     void txtHandlingVertices()
     {
-        Debug.Log("Entering vertices func" );
         List<Vector3> temp = new List<Vector3>();
         if (txtFileVertices != null)
         {
@@ -76,21 +75,18 @@ public class MeshGenerator : MonoBehaviour
 
     void textHandlingTriangles()
     {
-        Debug.Log("Entering Triangle func" );
         List<int> temp = new List<int>();
                if (txtFileTriangle != null)
                {
                    
                    CultureInfo cultureInfo = new CultureInfo("en-US");
                    string[] textInfo = txtFileTriangle.text.Split('\n'); //this is the content as string
-                   Debug.Log("text lengt " + textInfo.Length);
                    for (int k = 1; k < textInfo.Length;k++)
                    {
                        var data = textInfo[k].Split(' ');
                        if (data.Length == 6)
                        {
                            
-                           Debug.Log("pain" + data[0] + data[1]+data[2]);
                            temp.Add(int.Parse(data[0],cultureInfo));
                            temp.Add(int.Parse(data[1],cultureInfo));
                            temp.Add(int.Parse(data[2],cultureInfo));
